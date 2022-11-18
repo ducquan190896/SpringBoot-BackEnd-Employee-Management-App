@@ -4,6 +4,10 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.*;
 
 
@@ -28,7 +32,7 @@ public class Employee {
         strategy = GenerationType.SEQUENCE,
         generator = "role_sequence"
     )
-    @Column(name = "id", updatable = false)
+    // @Column(name = "id", updatable = false)
     private Long id;
 
     @NonNull
@@ -45,5 +49,14 @@ public class Employee {
     @Email(message = "email must be in form email")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+     @JsonIgnore
+    // @JsonBackReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(
+        name = "department_id",
+        referencedColumnName = "id"
+    )
+    private Department department;
     
 }
